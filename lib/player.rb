@@ -1,6 +1,6 @@
 # This class controls player actions
 class Player
-  attr_reader :name
+  attr_reader :name, :past_guesses
 
   def initialize(player_name)
     @name = player_name
@@ -11,8 +11,13 @@ class Player
     this_guess = ""
     loop do
       this_guess = gets.chomp.downcase
-      puts "Invalid guess. Try again." if this_guess.length != 1 || !this_guess.match?(/[a-z]/)
-      puts "You already guessed this. Try again." if @past_guesses.include?(this_guess)
+      if this_guess.length != 1 || !this_guess.match?(/[a-z]/)
+        puts "Invalid guess. Try again."
+      elsif @past_guesses.include?(this_guess)
+        puts "You already guessed this. Try again."
+      else
+        break
+      end
     end
     this_guess
   end
