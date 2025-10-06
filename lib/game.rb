@@ -26,25 +26,28 @@ class Game
   end
 
   def player_turn
-    system("clear")
-    puts "#{@remaining_guesses} incorrect guesses left.\n"
-    puts @guess_board.join
-    puts "\nPast guesses: #{@past_guesses}"
-    puts "\nAlright #{@player.name}, guess a letter."
-
+    display_board
     player_guess = @player.ask_for_guess
-    @past_guesses.push(player_guess)
     check_guess(player_guess)
-    if check_win
+    if check_win?
       win_screen
-    elsif check_lose
+    elsif check_lose?
       lose_screen
     else
       player_turn
     end
   end
 
+  def display_board
+    system("clear")
+    puts "#{@remaining_guesses} incorrect guesses left.\n"
+    puts @guess_board.join
+    puts "\nPast guesses: #{@past_guesses}"
+    puts "\nAlright #{@player.name}, guess a letter."
+  end
+
   def check_guess(guess)
+    @past_guesses.push(guess)
     if @secret_word.include?(guess)
       @secret_word.each_with_index do |val, index|
         @guess_board[index] = "#{guess} " if val == guess
@@ -54,11 +57,11 @@ class Game
     end
   end
 
-  def check_win
+  def check_win?
     !@guess_board.include?("_ ")
   end
 
-  def check_lose
+  def check_lose?
     @remaining_guesses.zero?
   end
 

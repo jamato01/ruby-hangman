@@ -8,17 +8,13 @@ class Player
   end
 
   def ask_for_guess
-    this_guess = ""
     loop do
-      this_guess = gets.chomp.downcase
-      if this_guess.length != 1 || !this_guess.match?(/[a-z]/)
-        puts "Invalid guess. Try again."
-      elsif @past_guesses.include?(this_guess)
-        puts "You already guessed this. Try again."
-      else
-        break
+      guess = gets.chomp.downcase
+      if guess.length == 1 && guess.match?(/[a-z]/) && !@past_guesses.include?(guess)
+        @past_guesses << guess
+        return guess
       end
+      puts "Invalid guess. Try again."
     end
-    this_guess
   end
 end
