@@ -11,6 +11,7 @@ if load_choice == "y"
   file_name = gets.chomp
   if File.exist?("lib/saved_games/#{file_name}.yml")
     saved_game = File.read("lib/saved_games/#{file_name}.yml")
+    File.delete("lib/saved_games/#{file_name}.yml")
     game = YAML.safe_load(saved_game, permitted_classes: [Game, Player])
     game.player_turn
   else
