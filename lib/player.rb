@@ -13,6 +13,8 @@ class Player
       if guess.length == 1 && guess.match?(/[a-z]/) && !@past_guesses.include?(guess)
         @past_guesses << guess
         return guess
+      elsif guess == "save"
+        return "save"
       end
       puts "Invalid guess. Try again."
     end

@@ -1,3 +1,5 @@
+require "yaml"
+
 # This class runs the came
 class Game
   def initialize(player_name)
@@ -28,6 +30,14 @@ class Game
   def player_turn
     display_board
     player_guess = @player.ask_for_guess
+    if player_guess == "save"
+      save_game
+    else
+      do_with_guess(player_guess)
+    end
+  end
+
+  def do_with_guess(player_guess)
     check_guess(player_guess)
     if check_win?
       win_screen
@@ -43,7 +53,7 @@ class Game
     puts "#{@remaining_guesses} incorrect guesses left.\n"
     puts @guess_board.join
     puts "\nPast guesses: #{@past_guesses}"
-    puts "\nAlright #{@player.name}, guess a letter."
+    puts "\nAlright #{@player.name}, guess a letter, or type 'save' to save your game."
   end
 
   def check_guess(guess)
@@ -73,5 +83,15 @@ class Game
 
   def lose_screen
     puts "You lose! The secret word was #{@secret_word.join}"
+  end
+
+  def save_game
+    puts "Name your save file:"
+    file_name = gets.chomp
+    File.open("lib/saved_games/#{file_name}.yml", "w") do |file|
+      file.puts YAML.dump(self)
+    end
+    puts "Game saved!"
+    exit
   end
 end
